@@ -5,17 +5,19 @@ The welcome page previews without Cloudflare credentials or a database.
 
 ## Follow the workshop
 
-Choose **Use this template → Create a new repository**, then open your copy in
-Claude Code web or a local coding agent. Follow [GUIDE.md](GUIDE.md):
+Download from GitHub using **Code → Download ZIP**, extract it, and open the
+folder in **Claude Desktop → Code → Local**. No GitHub account connection needed.
+Alternatively, use `git clone` and open the cloned folder. Follow [GUIDE.md](GUIDE.md):
 
-1. Ask the agent to install dependencies and start the preview.
+1. Ask Claude to install dependencies and start the preview.
 2. Paste the CaseReady build prompt.
-3. Ask the agent to connect your Cloudflare account and deploy.
-4. Request a change and redeploy.
+3. Let Claude explain Cloudflare setup and run Void; complete signup/login yourself.
+4. Deploy with Void, request a change, and redeploy.
 
-Web agents need separate Cloudflare credentials and an environment that can expose
-its preview server. The guide explains this; the full browser path still needs a
-workshop rehearsal. A local agent can use Void's browser login.
+[CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) tells Claude how to guide account setup.
+Claude must not control Chrome or automate signup, login, or authorization.
+All deployments use Void. The full local account/AI/deployment flow still needs a
+workshop rehearsal.
 
 ## Run manually
 
@@ -46,6 +48,7 @@ also needs account access. See [GUIDE.md](GUIDE.md) for account setup and AI usa
 | `void.config.ts` | Shared app configuration, without an account target |
 | `AGENTS.md` | Instructions for your coding agent |
 | `GUIDE.md` | Copyable start, build, and deployment prompts |
+| `CLOUDFLARE_SETUP.md` | AI instructions for human-operated account setup and Void auth |
 
 This template ships without an account-specific `void.lock.json`. After connecting
 your own account, keep the generated lockfile in your own project so future

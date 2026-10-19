@@ -15,8 +15,16 @@
 - After adding void/ai, development uses real Cloudflare AI and needs account access.
 - Read the installed Void authentication docs before connecting or deploying. Verify
   the attendee's intended account; never use a template author's saved account.
-- Cloud sessions need configured Cloudflare API credentials and network access;
-  a login in the attendee's separate browser does not authenticate the cloud VM.
+- The supported workshop path is Claude Desktop Code in Local mode, with a
+  GitHub ZIP download first or git clone as an alternative. No GitHub account
+  connection is required.
+- Follow CLOUDFLARE_SETUP.md for account creation and authentication. Explain the
+  steps and run Void commands; the attendee operates every account browser screen.
+  Never use Chrome control, computer use, browser automation, or a browser MCP to
+  sign up, log in, verify email/MFA, grant authorization, or manage billing.
+- Use only Void commands for deployment. Do not substitute Wrangler, cf CLI,
+  GitHub Actions, or dashboard deployment. Opening the auth page via Void is fine;
+  interacting with it on the attendee's behalf is not.
 - Keep credentials out of chat, source files, commits, and logs. Use the platform's
   credential settings. Do not pretend a preview or deployment succeeded.
 - Run pnpm typecheck and pnpm build for app changes.
