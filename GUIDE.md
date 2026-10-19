@@ -4,25 +4,33 @@ Make a legal-tech demo with a coding agent: turn a fictional story into an edita
 
 ## 1. Get your copy
 
-Open [caseready-starter](https://github.com/TrystonPerry/caseready-starter) and choose **Use this template → Create a new repository** under your GitHub account.
+Our workshop uses **Claude Desktop → Code → Local**. Claude runs the development commands; you handle all account signup and browser authorization yourself.
 
-Connect your copy to Claude Code on the web, or clone/open it in your local coding agent. Use your own repository so you can keep building after the workshop.
+1. Open [caseready-starter](https://github.com/TrystonPerry/caseready-starter), click **Code → Download ZIP**, and extract it into a folder. A public ZIP download does not require a GitHub account or connection.
+2. Install/sign in to [Claude Desktop](https://code.claude.com/docs/en/desktop-quickstart) with a plan that includes Claude Code.
+3. Open **Code**, choose **Local**, then **Open folder** and select the extracted project folder containing `package.json`.
 
-You need GitHub, an agent account with coding access, and a [Cloudflare account](https://dash.cloudflare.com/sign-up). The agent runs the development commands for you; you paste the prompts below into its chat.
+If you prefer Git, clone instead of downloading the ZIP:
 
-**Browser sessions:** Claude's cloud environment needs the project's Node version, package downloads, and a way to expose its dev server. Ask the agent to check these in the start prompt. If it cannot provide an accessible preview, use a local agent or preview the deployed app. A remote localhost address alone is not a working browser preview.
+```sh
+git clone https://github.com/TrystonPerry/caseready-starter.git
+```
 
-**Cloudflare connection:** Local agents can use Void's browser login. Web agents need Cloudflare API credentials configured in their cloud environment and network access to Cloudflare. Merely signing into Cloudflare in a separate tab does not connect the agent. Configure `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` using the environment's credential settings, not chat or GitHub. Have the agent consult the installed Void Cloudflare integration docs for the required token permissions. This browser deployment path still needs an end-to-end workshop rehearsal. [Claude cloud setup](https://code.claude.com/docs/en/cloud-environments), [Void authentication](https://void.cloud/reference/cli/auth).
+Open that folder in Claude Desktop the same way. Creating your own GitHub repository or connecting GitHub to Claude is optional.
+
+The app needs Node **>=24.21.0** and pnpm **10.34.7**. The first prompt asks Claude to check these; if Node is missing, Claude should explain how you can install a compatible version from [nodejs.org](https://nodejs.org/en/download). You do not need a separate Claude CLI installation.
 
 ## 2. Start the preview
 
 Paste into your agent:
 
 ```text
-Read AGENTS.md and GUIDE.md. Check that Node satisfies package.json engines.
+Read AGENTS.md, GUIDE.md, and CLOUDFLARE_SETUP.md. Work locally.
+Check that Node satisfies package.json engines; if missing, walk me through
+installing it. Check/install the pinned pnpm version as needed.
 Use the project's pinned pnpm version and pnpm install --frozen-lockfile.
-Start pnpm dev and keep it running. Give me an accessible preview link.
-If this cloud environment cannot expose the server, say so explicitly.
+Start pnpm dev and keep it running. Show me the preview in Claude Desktop
+or give me its local browser address.
 Don't build CaseReady or deploy yet. Don't run void init, database migrations,
 or seed commands: this starter is ready to preview without a Cloudflare login.
 ```
@@ -67,11 +75,13 @@ On October 12, 2026, I bought a portable heater for $65.
 
 Implement it, run pnpm typecheck and pnpm build, and update the preview.
 Adding Workers AI requires Cloudflare account access even in development.
-If credentials are missing, explain the connection step; never fake AI results.
+If account access is missing, follow CLOUDFLARE_SETUP.md to walk me through
+connecting it. I handle the browser screens myself; do not control Chrome
+or use browser automation for signup, login, or authorization. Never fake AI results.
 Keep deployment for the next prompt.
 ```
 
-The agent may need you to connect Cloudflare at this point: importing `void/ai` makes development use real Workers AI. For a local agent, let it run `pnpm exec void connect --platform cloudflare` and help you complete login. For a web agent, use the environment credentials described above. [Void AI behavior](https://void.cloud/guide/ai).
+Adding `void/ai` makes development use real Workers AI. When account access is needed, Claude follows [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md): it explains the signup steps and runs Void's connection command; you complete signup, login, and authorization in your own browser. [Void AI behavior](https://void.cloud/guide/ai).
 
 Load the fictional example. Check four dated events, one undated follow-up, and the $65 expense. Edit/delete an event and try printing. Notes clear on refresh.
 
@@ -80,10 +90,13 @@ Load the fictional example. Check four dated events, one undated follow-up, and 
 Paste:
 
 ```text
-Deploy CaseReady to my own Cloudflare account using Void. First read the
-installed Void authentication and Cloudflare deployment docs. Check access
+Deploy CaseReady to my own Cloudflare account using Void. First read
+CLOUDFLARE_SETUP.md and installed Void authentication/deployment docs. Check access
 with pnpm exec void cloudflare status and verify the intended account with me.
-Help me connect if needed. Never print credentials or use another person's
+Walk me through connecting if needed. I handle all account browser screens;
+do not control Chrome or automate signup, login, or authorization. Use only
+Void for deployment, never Wrangler, cf CLI, GitHub Actions, or dashboard
+deployment. Never print credentials or use another person's
 saved account. Use the same Node and pnpm versions as this project.
 Run pnpm typecheck and pnpm build, then pnpm deploy. Return the public URL.
 Verify the deployed page and tell me which checks actually passed. If account
@@ -122,4 +135,4 @@ Workers AI working; don't substitute canned results. Explain any account or
 network access I must provide. Error: [paste error, excluding credentials]
 ```
 
-The starting preview needs no account; AI development and deployment do. If web authentication or preview blocks the session, continue locally or have a helper assist with deployment. Do not spend the workshop repeatedly attempting a browser login inside a cloud VM.
+The starting preview needs no account; AI development and deployment do. Stay in Claude Desktop Local mode. If login stalls, ask Claude to explain the next manual step or ask a workshop helper. Claude must not take over the browser to complete account setup.
