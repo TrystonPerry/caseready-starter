@@ -4,6 +4,5 @@ export const GET = defineHandler(() => {
   return {
     message: "Hello from Void",
     framework: "React",
-    database: "D1",
   };
 });
