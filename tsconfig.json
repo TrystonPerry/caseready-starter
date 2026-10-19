@@ -12,15 +12,6 @@
     ],
     "jsx": "react-jsx",
     "paths": {
-      "void/db": [
-        "./.void/db.d.ts"
-      ],
-      "@schema": [
-        "./db/schema.ts"
-      ],
-      "@schema/*": [
-        "./db/schema/*"
-      ],
       "void/routes": [
         "./.void/routes.d.ts"
       ]
@@ -32,11 +23,9 @@
     "routes",
     "middleware",
     "crons",
-    "queues",
-    "db"
+    "queues"
   ],
   "files": [
-    "./.void/routes.d.ts",
-    "./.void/db.d.ts"
+    "./.void/routes.d.ts"
   ]
 }

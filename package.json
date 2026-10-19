@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vp dev",
     "build": "vp build",
-    "preview": "vp preview"
+    "preview": "vp preview",
+    "typecheck": "void prepare && tsc --noEmit",
+    "deploy": "void deploy --platform cloudflare"
   },
   "dependencies": {
     "hono": "^4.11.9",
@@ -21,5 +23,9 @@
     "oxc-transform-react": "^0.149.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3"
-  }
+  },
+  "engines": {
+    "node": ">=24.21.0"
+  },
+  "packageManager": "pnpm@10.34.7"
 }
