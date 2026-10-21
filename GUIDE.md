@@ -4,6 +4,10 @@ Make a legal-tech demo with a coding agent: turn a fictional story into an edita
 
 ## 1. Get your copy
 
+Bring a laptop. Nothing else. Do not install Node, pnpm, or Claude beforehand, and do not create a GitHub or Cloudflare account before you arrive. We do that in the room.
+
+This workshop works on macOS, Linux, and 64-bit Windows. It does not work on Windows on ARM (Snapdragon and other ARM Windows PCs). The local Workers runtime publishes no Windows ARM build, so the preview cannot start there.
+
 Our workshop uses **Claude Desktop → Code → Local**. Claude runs the development commands; you handle all account signup and browser authorization yourself.
 
 1. Open [caseready-starter](https://github.com/TrystonPerry/caseready-starter), click **Code → Download ZIP**, and extract it into a folder. A public ZIP download does not require a GitHub account or connection.
@@ -18,7 +22,22 @@ git clone https://github.com/TrystonPerry/caseready-starter.git
 
 Open that folder in Claude Desktop the same way. Creating your own GitHub repository or connecting GitHub to Claude is optional.
 
-The app needs Node **>=24.21.0** and pnpm **10.34.7**. The first prompt asks Claude to check these; if Node is missing, Claude should explain how you can install a compatible version from [nodejs.org](https://nodejs.org/en/download). You do not need a separate Claude CLI installation.
+You need Node **>=24.21.0**, installed during the session if you do not already have it. You do not install pnpm, Wrangler, or other Cloudflare tooling. You do not need a separate Claude CLI installation.
+
+Check Node:
+
+```sh
+node -v
+```
+
+If that command fails, or the version is below 24.21.0:
+
+- **macOS or Windows, and you can approve an admin install:** install the Node.js 24 LTS installer from [nodejs.org](https://nodejs.org/en/download). The installer needs administrator rights.
+- **No admin rights:** install Node 24 with a per-user version manager, [fnm](https://github.com/Schniz/fnm) or [nvm](https://github.com/nvm-sh/nvm). On Windows, use [nvm-windows](https://github.com/coreybutler/nvm-windows).
+
+Run `node -v` again and confirm it prints v24.21.0 or newer.
+
+Fully quit Claude Desktop and reopen it after installing Node. The app's terminal keeps the PATH from when the app started, so it will not see a newly installed Node until you restart it. Claude's install notes say the same thing: a terminal inside an editor takes its PATH from the editor, so quit and reopen the editor. See [Claude Code install troubleshooting](https://code.claude.com/docs/en/troubleshoot-install).
 
 ## 2. Start the preview
 
@@ -26,10 +45,14 @@ Paste into your agent:
 
 ```text
 Read AGENTS.md, GUIDE.md, and CLOUDFLARE_SETUP.md. Work locally.
-Check that Node satisfies package.json engines; if missing, walk me through
-installing it. Check/install the pinned pnpm version as needed.
-Use the project's pinned pnpm version and pnpm install --frozen-lockfile.
-Start pnpm dev and keep it running. Show me the preview in Claude Desktop
+Check that Node satisfies package.json engines (Node >= 24.21.0). If it
+does not, stop and walk me through GUIDE.md section 1. After I install Node,
+I will fully quit and reopen Claude Desktop before you continue.
+Install dependencies with:
+npx --yes pnpm@10.34.7 install --frozen-lockfile
+Do not install pnpm globally and do not run corepack enable.
+Start npm run dev and keep it running. The Claude Desktop preview config is
+already in .claude/launch.json (npm run dev, port 5173). Show me the preview
 or give me its local browser address.
 Don't build CaseReady or deploy yet. Don't run void init, database migrations,
 or seed commands: this starter is ready to preview without a Cloudflare login.
@@ -56,6 +79,10 @@ Make a polished, mobile-friendly single-page React app with:
 - Extract only facts in the story: date or null, short title, description,
   and category (email, call, payment, repair, other). Never invent dates.
   Sort known dates; group undated events under Date unknown.
+- Include every event, including ones with no stated date (date: null); never drop
+  them. Include a short example in the system prompt.
+- The model isn't in the typed model list; treat ai.run output as unknown and
+  validate it.
 - Validate the model response server-side before showing editable event cards.
 - Let users add, edit, and delete events, then print a clean summary.
 - Clear loading, empty, retry, and AI-limit/error states. Retain input on errors.
@@ -73,7 +100,7 @@ On October 9, 2026, a repair person visited but the heater still didn't work.
 I sent another email afterward, but I don't remember the date.
 On October 12, 2026, I bought a portable heater for $65.
 
-Implement it, run pnpm typecheck and pnpm build, and update the preview.
+Implement it, run npm run typecheck and npm run build, and update the preview.
 Adding Workers AI requires Cloudflare account access even in development.
 If account access is missing, follow CLOUDFLARE_SETUP.md to walk me through
 connecting it. I handle the browser screens myself; do not control Chrome
@@ -81,7 +108,7 @@ or use browser automation for signup, login, or authorization. Never fake AI res
 Keep deployment for the next prompt.
 ```
 
-Adding `void/ai` makes development use real Workers AI. When account access is needed, Claude follows [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md): it explains the signup steps and runs Void's connection command; you complete signup, login, and authorization in your own browser. [Void AI behavior](https://void.cloud/guide/ai).
+Adding `void/ai` makes development use real Workers AI. When account access is needed, Claude follows [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) and explains the next step. Create a Cloudflare account then, in the room, if you do not already have one. You run `npx void connect --platform cloudflare` yourself in Claude Desktop's terminal panel and finish login in your browser. [Void AI behavior](https://void.cloud/guide/ai).
 
 Load the fictional example. Check four dated events, one undated follow-up, and the $65 expense. Edit/delete an event and try printing. Notes clear on refresh.
 
@@ -92,18 +119,25 @@ Paste:
 ```text
 Deploy CaseReady to my own Cloudflare account using Void. First read
 CLOUDFLARE_SETUP.md and installed Void authentication/deployment docs. Check access
-with pnpm exec void cloudflare status and verify the intended account with me.
-Walk me through connecting if needed. I handle all account browser screens;
-do not control Chrome or automate signup, login, or authorization. Use only
-Void for deployment, never Wrangler, cf CLI, GitHub Actions, or dashboard
-deployment. Never print credentials or use another person's
-saved account. Use the same Node and pnpm versions as this project.
-Run pnpm typecheck and pnpm build, then pnpm deploy. Return the public URL.
+with npx void cloudflare status and verify the intended account with me.
+If login is required, do not run it from your command runner. Explicit browser
+login needs an interactive terminal. Tell me to run this myself in Claude
+Desktop's terminal panel, from this project folder:
+npx void connect --platform cloudflare
+I handle all account browser screens; do not control Chrome or automate
+signup, login, or authorization. Use only Void for deployment, never
+Wrangler, cf CLI, GitHub Actions, or dashboard deployment. Never print
+credentials or use another person's saved account.
+Run npm run typecheck and npm run build, then npm run deploy:cloudflare.
+Do not run pnpm deploy: that is pnpm's built-in command and fails with
+ERR_PNPM_NOTHING_TO_DEPLOY. Return the public URL.
 Verify the deployed page and tell me which checks actually passed. If account
 access is missing, explain the exact next step rather than claiming success.
 ```
 
-Complete the account/login step when prompted. Open the public URL and repeat the fictional-story test. In [Cloudflare](https://dash.cloudflare.com/), select your account and find the app under **Workers & Pages**. Deployment creates the app directly in your account; no separate claim link is needed. [Void deployment](https://void.cloud/guide/deployment).
+When Claude asks you to connect, open Claude Desktop's terminal panel and run `npx void connect --platform cloudflare` yourself. Finish login and authorization in the browser. Then tell Claude to continue.
+
+Open the public URL and repeat the fictional-story test. In [Cloudflare](https://dash.cloudflare.com/), select your account and find the app under **Workers & Pages**. Deployment creates the app directly in your account; no separate claim link is needed. [Void deployment](https://void.cloud/guide/deployment).
 
 ## 5. Make another change
 
@@ -114,6 +148,15 @@ Run the checks, update the preview, and redeploy to the same account and app.
 ```
 
 Open the same public URL to see your change.
+
+## Clean up
+
+`void project delete` refuses on a direct Cloudflare target: "Refusing to delete Cloudflare resources through this command." Void will not delete those resources for you. Delete the app yourself:
+
+1. Open the [Cloudflare dashboard](https://dash.cloudflare.com/) and select your account.
+2. Go to **Workers & Pages** → your app → **Settings** → **Delete**.
+
+Confirm the app name before you delete it. This removes that Worker. It does not delete your Cloudflare account.
 
 ## AI allowance and optional credits
 
