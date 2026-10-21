@@ -2,6 +2,9 @@
 
 A minimal React + [Void](https://void.cloud) template for the CaseReady workshop.
 The welcome page previews without Cloudflare credentials or a database.
+Works on macOS, Linux, and 64-bit Windows. Windows on ARM is not supported.
+
+Attendees bring a laptop only. Node, Claude Desktop, and a Cloudflare account are set up during the workshop, not before it.
 
 ## Follow the workshop
 
@@ -16,25 +19,27 @@ Alternatively, use `git clone` and open the cloned folder. Follow [GUIDE.md](GUI
 
 [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) tells Claude how to guide account setup.
 Claude must not control Chrome or automate signup, login, or authorization.
-All deployments use Void. The full local account/AI/deployment flow still needs a
-workshop rehearsal.
+All deployments use Void. Cloudflare login has to happen in an interactive
+terminal. See [GUIDE.md](GUIDE.md).
 
 ## Run manually
 
-Use Node **>=24.21.0** and pnpm **10.34.7** (also declared in package.json).
+Use Node **>=24.21.0** (`node -v`). Do not install pnpm globally. The pinned pnpm is only the installer:
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm dev
+npx --yes pnpm@10.34.7 install --frozen-lockfile
+npm run dev
 ```
 
 Open the address printed by the server. No migrations, seed, or `void init` needed.
 
 ```sh
-pnpm typecheck
-pnpm build
-pnpm deploy
+npm run typecheck
+npm run build
+npm run deploy:cloudflare
 ```
+
+`npm run` executes the scripts in `node_modules/.bin`. The deploy script is `deploy:cloudflare` because `pnpm deploy` is a pnpm built-in and fails with `ERR_PNPM_NOTHING_TO_DEPLOY`.
 
 Deploy connects to your own Cloudflare account. After adding Workers AI, preview
 also needs account access. See [GUIDE.md](GUIDE.md) for account setup and AI usage.
@@ -45,6 +50,8 @@ also needs account access. See [GUIDE.md](GUIDE.md) for account setup and AI usa
 | --- | --- |
 | `pages/index.tsx` | Minimal welcome page to replace during the workshop |
 | `routes/api/hello.ts` | Example server endpoint |
+| `src/env.d.ts` | CSS module declaration so the first stylesheet import typechecks |
+| `.claude/launch.json` | Claude Desktop preview: `npm run dev` on port 5173 |
 | `void.config.ts` | Shared app configuration, without an account target |
 | `AGENTS.md` | Instructions for your coding agent |
 | `GUIDE.md` | Copyable start, build, and deployment prompts |
